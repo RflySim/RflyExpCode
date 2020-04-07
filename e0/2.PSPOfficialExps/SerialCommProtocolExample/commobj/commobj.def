@@ -1,0 +1,7 @@
+; commobj.def : Declares the module parameters for the DLL.
+
+LIBRARY      "commobj"
+
+EXPORTS
+; Explicit exports can go here
+

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+************************************************************************
+
+************************************************************************
+-->
+
+<PropertyList>
+
+ <path>myownUAV.ac</path>
+
+
+<animation>
+  <type>spin</type>
+  <object-name>propeller1</object-name>
+  <property>/engines/engine[0]/rpm</property>
+  <factor>-1</factor>
+  <center>
+    <x-m>0</x-m>
+    <y-m>7.5</y-m>
+    <z-m>1</z-m>
+  </center>
+  <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </axis>
+</animation>
+
+
+<animation>
+  <type>spin</type>
+  <object-name>propeller2</object-name>
+  <property>/engines/engine[1]/rpm</property>
+  <factor>1</factor>
+  <center>
+    <x-m>7.5</x-m>
+    <y-m>0</y-m>
+    <z-m>1</z-m>
+  </center>
+  <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </axis>
+</animation>
+
+
+<animation>
+  <type>spin</type>
+  <object-name>propeller3</object-name>
+  <property>/engines/engine[2]/rpm</property>
+  <factor>-1</factor>
+  <center>
+    <x-m>0</x-m>
+    <y-m>-7.5</y-m>
+    <z-m>1</z-m>
+  </center>
+  <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </axis>
+</animation>
+
+
+
+<animation>
+  <type>spin</type>
+  <object-name>propeller4</object-name>
+  <property>/engines/engine[3]/rpm</property>
+  <factor>1</factor>
+  <center>
+    <x-m>-7.5</x-m>
+    <y-m>0</y-m>
+    <z-m>1</z-m>
+  </center>
+  <axis>
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </axis>
+</animation>
+
+
+  
+</PropertyList>
