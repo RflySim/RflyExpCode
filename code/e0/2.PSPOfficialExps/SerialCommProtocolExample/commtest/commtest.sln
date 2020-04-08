@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commtest", "commtest.vcxproj", "{F03510D3-87DF-4D33-9DD8-667B80F973D7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commobj", "..\commobj\commobj.vcxproj", "{3F10E2A6-BE01-48CB-BD13-AC52EAB212D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F03510D3-87DF-4D33-9DD8-667B80F973D7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F03510D3-87DF-4D33-9DD8-667B80F973D7}.Debug|Win32.Build.0 = Debug|Win32
+		{F03510D3-87DF-4D33-9DD8-667B80F973D7}.Release|Win32.ActiveCfg = Release|Win32
+		{F03510D3-87DF-4D33-9DD8-667B80F973D7}.Release|Win32.Build.0 = Release|Win32
+		{3F10E2A6-BE01-48CB-BD13-AC52EAB212D2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3F10E2A6-BE01-48CB-BD13-AC52EAB212D2}.Debug|Win32.Build.0 = Debug|Win32
+		{3F10E2A6-BE01-48CB-BD13-AC52EAB212D2}.Release|Win32.ActiveCfg = Release|Win32
+		{3F10E2A6-BE01-48CB-BD13-AC52EAB212D2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
