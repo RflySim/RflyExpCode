@@ -1,1 +1,0 @@
-The multicopter performance evaluation website: https://flyeval.com/paper/.
