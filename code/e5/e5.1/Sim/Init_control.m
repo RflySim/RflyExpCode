@@ -1,13 +1,12 @@
 %%%  AttitudeControl_Sim
 clear
 path('./icon/',path);
-%Run the model initialization file icon/init.m
 Init;
 
 %Constant value
 RAD2DEG = 57.2957795;
 DEG2RAD = 0.0174533;
-%throttle when UAV hover
+%throttle when UAV is hovering
 THR_HOVER = 0.609;
 
 %% Initial condition
@@ -36,8 +35,8 @@ Saturation_I_RP_Min = -0.3;
 Saturation_I_Y_Max = 0.2;
 Saturation_I_Y_Min = -0.2;
 %max control angle,default 35deg
-MAX_CONTROL_ANGLE_ROLL = 15;
-MAX_CONTROL_ANGLE_PITCH  = 15;
+MAX_CONTROL_ANGLE_ROLL = 35;
+MAX_CONTROL_ANGLE_PITCH  = 35;
 %max control angle rate,rad/s 
 MAX_CONTROL_ANGLE_RATE_PITCH = 220;
 MAX_CONTROL_ANGLE_RATE_ROLL = 220;

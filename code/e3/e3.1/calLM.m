@@ -1,24 +1,24 @@
 %File Description:
-%  According to the accelerometer error model, the accelerometer error model parameters are calculated using the lm optimization algorithm.
+%  Unknown parameters in accelerometer error model are calculated using the
+%  lm optimization algorithm.
 close all
 clc
 clear
 
-load AccRaw  %Load uncalibrated accelerometer value
+load AccRaw  % load uncalibrated accelerometer data
 g = 9.8;
 m = length(AccRaw);
 
-y_dat = g*ones(m, 1);  %Expected gravitational acceleration value  
+y_dat = g*ones(m, 1);  % expected gravitational acceleration  
 p0 = [1 1 1 0 0 0]';
-p_init = [1.0 1.0 1.0 0.1 0.1 0.1]';  %Accelerometer error model parameter initial value
+p_init = [1.0 1.0 1.0 0.1 0.1 0.1]';  % initial value of unknown parameters
 
-y_raw = calFunc(AccRaw, p0);  %2-norm of uncalibrated accelerometer value
+y_raw = calFunc(AccRaw, p0);  % gravitational acceleration measured by accelerometer
 y_raw = y_raw(:);
-%The difference between the uncalibrated gravitational acceleration measured by the accelerometer 
-%and the standard gravitational acceleration
+
 r_raw = y_dat - y_raw;  
 p_fit = lm('calFunc', p_init, AccRaw, y_dat);
-y_lm = calFunc(AccRaw, p_fit);  %2-norm of calibrated accelerometer value
+y_lm = calFunc(AccRaw, p_fit);  % gravitational acceleration measured by calibrated accelerometer
 y_lm = y_lm(:);
 r_lm = y_dat - y_lm;
 
@@ -44,5 +44,5 @@ figure
 title('Accelerometer Calibration')
 plot(t, r_raw, t, r_lm)
 legend('Uncalibrated', 'Calibrated-LM')
-xlabel('Measurement sampling number')
+xlabel('Sampling sequence')
 ylabel('Residual')

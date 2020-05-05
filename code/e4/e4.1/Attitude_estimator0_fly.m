@@ -1,17 +1,17 @@
 clear;
 load logdata
-n = length(ax);  %Number of data collected
-Ts = zeros(1,n);  %time interval
+n = length(ax);  % the number of collected data 
+Ts = zeros(1,n);  % sampling time
 Ts(1) = 0.004;
 
 for k = 1:n-1
     Ts(k+1) = (timestamp(k+1) - timestamp(k))*0.000001;
 end
 
-theta_am = zeros(1, n);  %roll calculated from acceleration, unit: rad
-phi_am = zeros(1, n);  %pitch calculated from acceleration, unit: rad
-theta_gm = zeros(1, n);  %roll calculated from the gyroscope, unit: rad
-phi_gm = zeros(1, n);  %pitch calculated from the gyroscope, unit: rad
+theta_am = zeros(1, n);  %roll calculated from accelerometer data, unit: rad
+phi_am = zeros(1, n);  %pitch calculated from accelerometer data, unit: rad
+theta_gm = zeros(1, n);  %roll calculated from gyroscope data, unit: rad
+phi_gm = zeros(1, n);  %pitch calculated from gyroscope data, unit: rad
 theta_cf = zeros(1, n);  %roll calculated from complementary filtering, unit: rad
 phi_cf = zeros(1, n);  %pitch calculated from complementary filtering, unit: rad
 tao = 0.1;

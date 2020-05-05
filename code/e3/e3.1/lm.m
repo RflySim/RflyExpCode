@@ -1,29 +1,29 @@
 function p = lm(func, p, x, y_dat, dp, p_min, p_max)
 %Function description:
 %Input:
-%  func: Function name y_hat = func(x, p)
-%  p: Initialization value of the parameter to be estimated
-%  x: Original value
+%  func: functfion name y_hat = func(x, p)
+%  p: initial value of the parameter to be estimated
+%  x: original value
 %  y_dat: func(x, p)'s expected value, m-dimensional vector
-%  dp: Related to the solution of the Jocobian matrix. 
-%  p_min: The minimum value of the parameter to be estimated, default is -10*abs(p)
-%  p_max: The maximum value of the parameter to be estimated, default is 10*abs(p)
+%  dp: related to the Jocobian matrix. 
+%  p_min: the minimum value of the parameter to be estimated, default is -10*abs(p)
+%  p_max: the maximum value of the parameter to be estimated, default is 10*abs(p)
 %Output:
-%  p: Estimated parameter
+%  p: estimated parameter
 
-   p = p(:); y_dat = y_dat(:);  %Convert to column vector
-   Npar = length(p); 			% Number of parameters to be estimated
+   p = p(:); y_dat = y_dat(:);  % convert to column vector
+   Npar = length(p); 			% number of parameters to be estimated
 
    if length(x) ~= length(y_dat)
        disp('lm.m err: The length of x must be equal to the length of y_dat!');
    end
 
     %parameter
-    MaxIter = 200000*Npar;	%The maximum number of iterations
-	epsilon_1     = 1e-6;	%Gradient convergence tolerance of cost function
-	epsilon_2     = 1e-6;	%Convergence tolerance of the parameters to be fitted
-	epsilon_4     = 1e-6;	%Parameters in the LM algorithm, determining the transformation step size of the parameters
-	lambda_0      = 1e-5;	%lambda initial parameter
+    MaxIter = 200000*Npar;	% the maximum number of iterations
+	epsilon_1     = 1e-6;	% gradient convergence tolerance of cost function
+	epsilon_2     = 1e-6;	% convergence tolerance of the parameters to be fitted
+	epsilon_4     = 1e-6;	% parameters in the LM algorithm, determining the transformation step size of the parameters
+	lambda_0      = 1e-5;	% lambda initial parameter
 
 	Fx_hst = [];
     %If no parameters are specified, then the default parameters are used.
@@ -43,13 +43,13 @@ function p = lm(func, p, x, y_dat, dp, p_min, p_max)
     Fx_old = delta_y' * delta_y;
     Fx_hst(1) =  Fx_old;
     if ( max(abs(beta)) < epsilon_1 )
-        fprintf(' *** The initial estimate is close to optimal and the Fx derivative tends to zero. ***\n')
+        fprintf(' *** The initial estimated parameters is close to optimal and the Fx derivative tends to zero. ***\n')
         fprintf(' *** epsilon_1 = %e\n', epsilon_1);
         fprintf('***Fx = %e\n', Fx_old);
         stop = 1;
     end
  
-    %lambda initial value
+    % lambda initial value
 	lambda  = lambda_0 * max(diag(alpha));	% Nielsen method
 	nu = 2;
     
@@ -60,15 +60,17 @@ function p = lm(func, p, x, y_dat, dp, p_min, p_max)
         % update mode of the parameter change step size
         delta_p = ( alpha + lambda*diag(diag(alpha)) ) \ beta;	
 
-        p_try = p + delta_p;  % Update parameter
-        p_try = min(max(p_min,p_try), p_max);  % Parameter clipping
+        p_try = p + delta_p;  % update parameter
+        p_try = min(max(p_min,p_try), p_max);  % parameter clipping
 
-        delta_y = y_dat - (feval(func, x, p_try))';  % Residual
+        delta_y = y_dat - (feval(func, x, p_try))';  % residual
         Fx = delta_y' * delta_y;
         Fx_hst(iteration+1) = Fx;
         rho = (Fx_old - Fx) / ( delta_p' * (lambda * delta_p + beta) ); % Nielsen
 
-        if ( rho > epsilon_4 )		% The approximation is good, the lamda is reduced, and the step size is close to the step size of the Gauss-Newton method.
+        if ( rho > epsilon_4 )
+            % The approximation is good, the lamda is reduced, and the step
+            % size is close to the step size of the Gauss-Newton method.
             p = p_try(:);
     
             [alpha, beta, delta_y] = lm_matx(func, x, p, y_dat, dp);
@@ -76,12 +78,13 @@ function p = lm(func, p, x, y_dat, dp, p_min, p_max)
             Fx_old = Fx;
     
             lambda = lambda*max( 1/3, 1-(2*rho-1)^3 ); nu = 2;
-        else	%Poor approximation, using small steps
+        else
+            % poor approximation, using small steps
             lambda = lambda * nu;   nu = 2*nu;  % Nielsen
         end
-        %Determine if iteration can be ended
+        % determine if iteration can be ended
         if ( max(abs(delta_p./p)) < epsilon_2  &&  iteration > 2 ) 
-            fprintf(' **** The parameters to be sought tend to be stable during the iteration **** \n')
+            fprintf(' **** The parameters to be estimated tend to be stable during the iteration **** \n')
             fprintf(' **** epsilon_2 = %e\n', epsilon_2);
             fprintf('***The number of iterations is %e\n', iteration);
             figure
@@ -110,7 +113,7 @@ function p = lm(func, p, x, y_dat, dp, p_min, p_max)
         
 function dydp = lm_dydp(func, x ,p, y, dp)
 %Function description:
-%  alculate the first derivative of func to p, the Jocobian matrix
+%  calculate the first derivative of func to p, the Jocobian matrix
 %Input:
 %  func : y_hat = func(x,p)
 %  x: m-dimensional vector
@@ -119,7 +122,7 @@ function dydp = lm_dydp(func, x ,p, y, dp)
 %  dp: The magnitude of the disturbance when deriving the number. Derivation method:
 %      dp(j)>0 f'(x)=(f(x,p+dp*p)-f(x,p-dp*p))/(2*dp*p)
 %      dp(j)<0 f'(x)=(f(x,p+dp*p)-f(x,p))/(dp*p)
-%      default:0.001;
+%      default: 0.001;
 %Output:
 %  dydp = Jacobian Matrix dydp(i,j)=dy(i)/dp(j)	i=1:m; j=1:n 
 
@@ -150,7 +153,7 @@ function dydp = lm_dydp(func, x ,p, y, dp)
 
 function [alpha, beta, delta_y] = lm_matx(func, x, p, y_dat, dp)
 %Function description:
-%  Calculate key data in the lm algorithm:alpha, beta¡£
+%  Calculate key data in the lm algorithm: alpha, beta.
 %Input:
 %  func: y_hat = func(x,p)
 %  x: m-dimensional vector
@@ -161,9 +164,9 @@ function [alpha, beta, delta_y] = lm_matx(func, x, p, y_dat, dp)
 %      dp(j)<0 f'(x)=(f(x,p+dp*p)-f(x,p))/(dp*p)
 %      default:0.001;
 %Output:
-%  alpha:J'J
-%  beta:J'delta_y
-%  delta_y:residual.
+%  alpha: J'J
+%  beta: J'delta_y
+%  delta_y: residual.
 
 	Npar = length(p);
 	if nargin < 5
@@ -177,6 +180,6 @@ function [alpha, beta, delta_y] = lm_matx(func, x, p, y_dat, dp)
 	delta_y = y_dat - y_hat';
 
     dydp = lm_dydp(func, x, p, y_hat, dp);
-	alpha = dydp'*  dydp;  %J'J  
-	beta  = dydp'* delta_y; %J'delta_y
+	alpha = dydp'*  dydp;  % J'J  
+	beta  = dydp'* delta_y;  % J'delta_y
 

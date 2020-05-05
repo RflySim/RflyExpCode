@@ -2,10 +2,10 @@ function Y = calFunc(x, p)
 %Function description:
 %  Accelerometer error model, Y(i) = norm(Ka*(x(:,i) - ba))
 %Input:
-%  x:Accelerometer original value, dimension 3*m
-%  p:Model parameter, dimension 6*1
+%  x: accelerometer data, dimension 3*m
+%  p: model parameter, dimension 6*1
 %Output:
-%  Y:Corrected gravitational acceleration value.
+%  Y: calibrated gravitational acceleration.
 
     kx = p(1);
     ky = p(2);

@@ -1,6 +1,6 @@
 %File Description:
-%  According to the accelerometer error model, the accelerometer error model 
-%  parameters are calculated using the lm optimization algorithm.
+%  Unknown parameters in accelerometer error model are calculated using the
+%  lm optimization algorithm.
 close all
 clc
 clear
@@ -8,11 +8,11 @@ clear
 %% Decode the binary data
 %@ [datapoints, numpoints] = px4_read_binary_file(' ');
 
-%% Get raw uncalibrated data
- %Accelerometer calibration parameters in the Pixhawk autopilot
- %which can be obtained from QGC
- %@ CAL_ACC_SCALE= ;  %3*1
- %@ CAL_ACC_OFF= ; %3*1
+%% Get uncalibrated data
+ %Accelerometer calibration parameters in the Pixhawk autopilot which can
+ %be obtained from QGC
+ %@ CAL_ACC_SCALE= ;  % 3*1 
+ %@ CAL_ACC_OFF= ;  % 3*1
 
 acc_acq = find(datapoints(4, :));
 g = 9.8;
@@ -21,21 +21,20 @@ datapoints(1:3, :) = (datapoints(1:3, :) + CAL_ACC_OFF) ./CAL_ACC_SCALE;
 datapoints(4:6, acc_acq) = (datapoints(4:6, acc_acq) + CAL_ACC_OFF) ./CAL_ACC_SCALE;
 plot_data(datapoints, acc_acq);
 
-AccRaw = datapoints(4:6, acc_acq);  %Raw data
+AccRaw = datapoints(4:6, acc_acq);  %raw data
 m=length(AccRaw);
 
-%% Parameter calibration
-y_dat = g*ones(m, 1); %Expected gravitational acceleration value  
+%% calibration procedure
+y_dat = g*ones(m, 1); % expected gravitational acceleration
 p0 = [1 1 1 0 0 0]';
-p_init = [1.0 1.0 1.0 0.1 0.1 0.1]';  %Accelerometer error model parameter initial value
+p_init = [1.0 1.0 1.0 0.1 0.1 0.1]';  % initial value of unknown parameters
 
-y_raw = calFunc(AccRaw, p0);  %2-norm of uncalibrated accelerometer value
+y_raw = calFunc(AccRaw, p0);  % gravitational acceleration measured by accelerometer
 y_raw = y_raw(:);
-%The difference between the uncalibrated gravitational acceleration measured by the accelerometer 
-%and the standard gravitational acceleration
+
 r_raw = y_dat - y_raw;
 p_fit = lm('calFunc', p_init, AccRaw, y_dat); 
-y_lm = calFunc(AccRaw, p_fit);  %2-norm of calibrated accelerometer value
+y_lm = calFunc(AccRaw, p_fit);  % gravitational acceleration measured by calibrated accelerometer
 y_lm = y_lm(:);
 r_lm = y_dat - y_lm;
 
@@ -62,7 +61,7 @@ figure
 title('Accelerometer Calibration')
 plot(t, r_raw, t, r_lm)
 legend('Uncalibrated','Calibrated-LM')
-xlabel('Measurement sampling number')
+xlabel('Sampling sequence')
 ylabel('Residual')
 
 function plot_data(datapoints, acc_acq)
@@ -74,20 +73,20 @@ function plot_data(datapoints, acc_acq)
     hold on
     plot(acc_acq, datapoints(4,acc_acq), '*')
     legend('Accelerometer data(ax)','Feature point')
-    title('Accelerometer X-axis sampling')
+    title('x-axis accelerometer sampling data')
     hold off
     figure
     plot(1:length(datapoints), datapoints(2,:))
     hold on
     plot(acc_acq, datapoints(5, acc_acq), '*')
     legend('Accelerometer data(ay)', 'Feature point')
-    title('Accelerometer Y-axis sampling')
+    title('y-axis accelerometer sampling data')
     hold off
     figure
     plot(1:length(datapoints), datapoints(3,:))
     hold on
     plot(acc_acq, datapoints(6,acc_acq), '*')
     legend('Accelerometer data(az)', 'Feature point')
-    title('Accelerometer Z-axis sampling')
+    title('z-axis accelerometer sampling data')
     hold off
 end

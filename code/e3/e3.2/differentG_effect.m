@@ -1,12 +1,12 @@
 close all
 clear
-load accdata.mat  %Raw accelerometer data collected
-%% Load calibration parameters
+load accdata.mat  % raw accelerometer data collected
+%% load calibration parameters
 %@ load calP1.mat
 %@ load ../e3.1/calP9_8.mat
 
-acc_1 = Ka1*(acc - ba1);  %Calibrated acceleration value
-acc_9_8 = Ka9_8*(acc - ba9_8);  %Calibrated acceleration value
+acc_1 = Ka1*(acc - ba1);  % calibrated accelerometer data
+acc_9_8 = Ka9_8*(acc - ba9_8);  
 
 n = length(acc);
 roll_1 = zeros(1, 100);
@@ -26,4 +26,4 @@ figure(1)
 plot(t, pitch_9_8, '*-', t, pitch_1, '^-');
 title('pitch')
 legend('g=9.8', 'g=1.0')
-xlabel('Number of samples');ylabel('angle/rad/s');
+xlabel('Sampling sequence');ylabel('angle/rad/s');
