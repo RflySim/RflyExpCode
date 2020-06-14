@@ -1,0 +1,435 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link rel="stylesheet" type="text/css" href="rtwreport.css" /><script language="JavaScript" type="text/javascript">function rtwTableShrink(o) {var t = o.nextSibling;if (t.nodeType != 1) {t = t.nextSibling;}if (t.style.display == "none") {t.style.display = "";o.innerHTML = "[-]"} else {t.style.display = "none";o.innerHTML = "[+] ... "}}</script><script language="JavaScript" type="text/javascript" src="rtwreport_utils.js"></script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>
+Code Interface Report for ekf_cf
+</title>
+
+</head>
+<body ONLOAD="try {if (top) {if (top.rtwPageOnLoad) top.rtwPageOnLoad('rtwIdCodeInterface'); else local_onload();}} catch(err) {};">
+<h1>
+Code Interface Report for ekf_cf
+</h1>
+<h3>
+Table of Contents
+</h3>
+<ul>
+<li>
+<a href="#sec_Entry_Point_Functions">
+Entry Point Functions
+</a>
+
+</li>
+<li>
+<a href="#sec_Inports">
+Inports
+</a>
+
+</li>
+<li>
+<a href="#sec_Outports">
+Outports
+</a>
+
+</li>
+<li>
+<a href="#sec_Interface_Parameters">
+Interface Parameters
+</a>
+
+</li>
+<li>
+<a href="#sec_Data_Stores">
+Data Stores
+</a>
+
+</li>
+
+</ul>
+<h3>
+<a name="sec_Entry_Point_Functions">
+Entry Point Functions
+</a>
+
+</h3>
+<p>
+Function: <a href="ekf_cf_c.html#fcn_ekf_cf_initialize">ekf_cf_initialize</a>
+</p>
+<table width="100%" class="AltRow" cellspacing="0">
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Prototype
+</td>
+<td width="75%" align="left" valign="top">
+<b>
+void ekf_cf_initialize(void)
+</b>
+
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Description
+</td>
+<td width="75%" align="left" valign="top">
+Initialization entry point of generated code
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Timing
+</td>
+<td width="75%" align="left" valign="top">
+Must be called exactly once
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Arguments
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Return value
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Header file
+</td>
+<td width="75%" align="left" valign="top">
+<a href="ekf_cf_h.html">ekf_cf.h</a>
+</td>
+
+</tr>
+
+</table>
+<p>
+Function: <a href="ekf_cf_c.html#fcn_ekf_cf_step">ekf_cf_step</a>
+</p>
+<table width="100%" class="AltRow" cellspacing="0">
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Prototype
+</td>
+<td width="75%" align="left" valign="top">
+<b>
+void ekf_cf_step(int_T tid)
+</b>
+
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Description
+</td>
+<td width="75%" align="left" valign="top">
+Output entry point of generated code
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Timing
+</td>
+<td width="75%" align="left" valign="top">
+Must be called periodically, every 0.001 seconds
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Arguments
+</td>
+<td width="75%" align="left" valign="top">
+<table class="AltRow FirstColumn" cellspacing="0">
+<tr class="heading">
+<th align="left" valign="top">
+<b>
+#
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Name
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Data Type
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Description
+</b>
+
+</th>
+
+</tr>
+<tr class="even">
+<td align="right" valign="top">
+1
+</td>
+<td align="left" valign="top">
+tid
+</td>
+<td align="left" valign="top">
+int_T
+</td>
+<td align="left" valign="top">
+TID0
+</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Return value
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Header file
+</td>
+<td width="75%" align="left" valign="top">
+<a href="ekf_cf_h.html">ekf_cf.h</a>
+</td>
+
+</tr>
+
+</table>
+<p>
+Function: <a href="ekf_cf_c.html#fcn_ekf_cf_step">ekf_cf_step</a>
+</p>
+<table width="100%" class="AltRow" cellspacing="0">
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Prototype
+</td>
+<td width="75%" align="left" valign="top">
+<b>
+void ekf_cf_step(int_T tid)
+</b>
+
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Description
+</td>
+<td width="75%" align="left" valign="top">
+Output entry point of generated code
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Timing
+</td>
+<td width="75%" align="left" valign="top">
+Must be called periodically, every 0.004 seconds
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Arguments
+</td>
+<td width="75%" align="left" valign="top">
+<table class="AltRow FirstColumn" cellspacing="0">
+<tr class="heading">
+<th align="left" valign="top">
+<b>
+#
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Name
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Data Type
+</b>
+
+</th>
+<th align="left" valign="top">
+<b>
+Description
+</b>
+
+</th>
+
+</tr>
+<tr class="even">
+<td align="right" valign="top">
+1
+</td>
+<td align="left" valign="top">
+tid
+</td>
+<td align="left" valign="top">
+int_T
+</td>
+<td align="left" valign="top">
+TID1
+</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Return value
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Header file
+</td>
+<td width="75%" align="left" valign="top">
+<a href="ekf_cf_h.html">ekf_cf.h</a>
+</td>
+
+</tr>
+
+</table>
+<p>
+Function: <a href="ekf_cf_c.html#fcn_ekf_cf_terminate">ekf_cf_terminate</a>
+</p>
+<table width="100%" class="AltRow" cellspacing="0">
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Prototype
+</td>
+<td width="75%" align="left" valign="top">
+<b>
+void ekf_cf_terminate(void)
+</b>
+
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Description
+</td>
+<td width="75%" align="left" valign="top">
+Termination entry point of generated code
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Timing
+</td>
+<td width="75%" align="left" valign="top">
+Must be called exactly once
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Arguments
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="even">
+<td width="25%" align="left" valign="top">
+Return value
+</td>
+<td width="75%" align="left" valign="top">
+None
+</td>
+
+</tr>
+<tr class="odd">
+<td width="25%" align="left" valign="top">
+Header file
+</td>
+<td width="75%" align="left" valign="top">
+<a href="ekf_cf_h.html">ekf_cf.h</a>
+</td>
+
+</tr>
+
+</table>
+<h3>
+<a name="sec_Inports">
+Inports
+</a>
+
+</h3>
+<p>
+No Inports in model.
+</p>
+<h3>
+<a name="sec_Outports">
+Outports
+</a>
+
+</h3>
+<p>
+No Outports in model.
+</p>
+<h3>
+<a name="sec_Interface_Parameters">
+Interface Parameters
+</a>
+
+</h3>
+<p>
+No interface/tunable parameters in model.
+</p>
+<h3>
+<a name="sec_Data_Stores">
+Data Stores
+</a>
+
+</h3>
+<p>
+No data stores in the model; note that this report lists only data stores with non-auto storage class and global data stores
+</p>
+
+</body>
+
+</html>

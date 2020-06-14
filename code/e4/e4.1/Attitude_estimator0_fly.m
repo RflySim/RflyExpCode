@@ -17,13 +17,17 @@ phi_cf = zeros(1, n);  %pitch calculated from complementary filtering, unit: rad
 tao = 0.1;
 for k = 2:n
     %Calculate Euler angles using accelerometer data
-    %@
+    g = sqrt(ax(k)*ax(k)+ay(k)*ay(k)+az(k)*az(k));
+    theta_am(k) = asin(ax(k)/g);
+    phi_am(k) = -asin(ay(k)/(g*cos(theta_am(k))));
    
     %Calculate Euler angles using gyroscope data
-    %@
+    theta_gm(k) = theta_gm(k - 1) + gy(k)*Ts(k);
+    phi_gm(k) = phi_gm(k - 1) + gx(k)*Ts(k);
     
     %Complementary filtering
-    %@
+     theta_cf(k) = tao/(tao + Ts(k))*(theta_cf(k - 1) + gy(k)*Ts(k)) + Ts(k)/(tao + Ts(k))*theta_am(k);
+    phi_cf(k) = tao/(tao + Ts(k))*(phi_cf(k - 1) + gx(k)*Ts(k)) + Ts(k)/(tao + Ts(k))*phi_am(k);
     
 end
 

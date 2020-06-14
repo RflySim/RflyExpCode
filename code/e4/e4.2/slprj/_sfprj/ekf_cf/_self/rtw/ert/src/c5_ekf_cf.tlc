@@ -1,0 +1,67 @@
+%implements "chartSource" "C"
+%function ChartConfig(block, system) void
+  %createrecord chartConfiguration { ...
+          executeAtInitialization  0 ...
+  }
+  %return chartConfiguration
+%endfunction
+%function ChartDataMap(block, system) void
+  %createrecord ChartDataElements {\
+    NumChartData   7 \
+    ChartDataDefaults {\
+      RecordType   "ChartData"\
+      Dimensions   []\
+      IsTestPoint  0\
+    }\
+    ChartData {\
+      Name         "fp"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:621-623"\
+    }\
+    ChartData {\
+      Name         "isflushed"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:624-633"\
+    }\
+    ChartData {\
+      Name         "isopen"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:634-640"\
+    }\
+    ChartData {\
+      Name         "count"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:641-646"\
+    }\
+    ChartData {\
+      Name         "lognumstr"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:647-656"\
+    }\
+    ChartData {\
+      Name         "elem_size"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:657-666"\
+    }\
+    ChartData {\
+      Name         "vect_size"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ekf_cf:67:667-676"\
+    }\
+  }
+  %return ChartDataElements
+%endfunction

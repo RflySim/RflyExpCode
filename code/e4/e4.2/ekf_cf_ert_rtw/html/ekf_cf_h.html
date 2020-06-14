@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * File: ekf_cf.h</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * Code generated for Simulink model 'ekf_cf'.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * Model version                  : 1.0</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> * Simulink Coder version         : 8.13 (R2017b) 24-Jul-2017</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * C/C++ source code generated on : Fri Jun 12 00:35:33 2020</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct"> * Target selection: ert.tlc</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="ct"> * Embedded hardware selection: ARM Compatible-&gt;ARM Cortex</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct"> * Code generation objectives: Unspecified</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="ct"> * Validation result: Not run</span></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="pp">#ifndef</span> <a id="16c9" class="tk">RTW_HEADER_ekf_cf_h_</a></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="pp">#define</span> <a id="17c9" class="tk">RTW_HEADER_ekf_cf_h_</a></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="pp">#include &lt;stddef.h&gt;</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="pp">#include &lt;math.h&gt;</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="pp">#include &lt;string.h&gt;</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="pp">#ifndef</span> <a id="21c9" class="tk">ekf_cf_COMMON_INCLUDES_</a></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="pp"># define</span> <a id="22c10" class="tk">ekf_cf_COMMON_INCLUDES_</a></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="pp">#include &lt;stdio.h&gt;</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="pp">#include &lt;time.h&gt;</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="pp">#include &lt;uORB/topics/vehicle_attitude.h&gt;</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="pp">#include &lt;poll.h&gt;</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="pp">#include &lt;px4_config.h&gt;</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="pp">#include &lt;px4_tasks.h&gt;</span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="pp">#include &lt;px4_posix.h&gt;</span></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="pp">#include &lt;unistd.h&gt;</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="pp">#include &lt;string.h&gt;</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="pp">#include &lt;px4_defines.h&gt;</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="pp">#include &lt;uORB/uORB.h&gt;</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="pp">#include &lt;drivers/drv_hrt.h&gt;</span></td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td><span class="pp">#include &lt;drivers/drv_led.h&gt;</span></td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td><span class="pp">#include &lt;drivers/drv_board_led.h&gt;</span></td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td><span class="pp">#include &lt;uORB/topics/led_control.h&gt;</span></td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><span class="pp">#include &lt;drivers/drv_rc_input.h&gt;</span></td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><span class="pp">#include &lt;uORB/topics/sensor_combined.h&gt;</span></td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td><span class="pp">#include "rtwtypes.h"</span></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="pp">#endif</span>                                 <span class="ct">/* ekf_cf_COMMON_INCLUDES_ */</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td><span class="pp">#include "ekf_cf_types.h"</span></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="pp">#include "rt_defines.h"</span></td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td><span class="pp">#include "rt_nonfinite.h"</span></td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td><span class="pp">#include "rtGetInf.h"</span></td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td></td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td><span class="ct">/* Macros for accessing real-time model data structure */</span></td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td><span class="pp">#ifndef</span> <a id="49c9" class="tk">rtmGetErrorStatus</a></td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td><span class="pp"># define</span> <a id="50c10" class="tk">rtmGetErrorStatus</a>(<a id="50c28" class="tk">rtm</a>)        ((<a id="50c42" class="tk">rtm</a>)-&gt;<a id="50c48" class="tk">errorStatus</a>)</td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td></td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td><span class="pp">#ifndef</span> <a id="53c9" class="tk">rtmSetErrorStatus</a></td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td><span class="pp"># define</span> <a id="54c10" class="tk">rtmSetErrorStatus</a>(<a id="54c28" class="tk">rtm</a>, <a id="54c33" class="tk">val</a>)   ((<a id="54c42" class="tk">rtm</a>)-&gt;<a id="54c48" class="tk">errorStatus</a> = (<a id="54c63" class="tk">val</a>))</td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td></td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td><span class="pp">#ifndef</span> <a id="57c9" class="tk">rtmStepTask</a></td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td><span class="pp"># define</span> <a id="58c10" class="tk">rtmStepTask</a>(<a id="58c22" class="tk">rtm</a>, <a id="58c27" class="tk">idx</a>)         ((<a id="58c42" class="tk">rtm</a>)-&gt;<a id="58c48" class="tk">Timing</a>.<a id="58c55" class="tk">TaskCounters</a>.<a id="58c68" class="tk">TID</a>[(<a id="58c73" class="tk">idx</a>)] <a id="58c79" class="tk">==</a> 0)</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td></td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td><span class="pp">#ifndef</span> <a id="61c9" class="tk">rtmTaskCounter</a></td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td><span class="pp"># define</span> <a id="62c10" class="tk">rtmTaskCounter</a>(<a id="62c25" class="tk">rtm</a>, <a id="62c30" class="tk">idx</a>)      ((<a id="62c42" class="tk">rtm</a>)-&gt;<a id="62c48" class="tk">Timing</a>.<a id="62c55" class="tk">TaskCounters</a>.<a id="62c68" class="tk">TID</a>[(<a id="62c73" class="tk">idx</a>)])</td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <a id="65c16" class="tk">pollfd</a> <a id="65c23" class="tk">pollfd_t</a>;</td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <a id="66c16" class="tk">led_control_s</a> <a id="66c30" class="tk">led_control_s_t</a>;</td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td></td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><span class="ct">/* Block signals (auto storage) */</span></td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <span class="br">{</span></td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td>  <a id="70c3" class="tk">real32_T</a> <a id="70c12" class="tk">PHI</a>[36];</td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td>  <a id="71c3" class="tk">real32_T</a> <a id="71c12" class="tk">GAMMA</a>[36];</td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td>  <a id="72c3" class="tk">real32_T</a> <a id="72c12" class="tk">PHI_m</a>[36];</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td>  <a id="73c3" class="tk">real32_T</a> <a id="73c12" class="tk">b_a</a>[36];</td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td>  <a id="74c3" class="tk">real32_T</a> <a id="74c12" class="tk">GAMMA_c</a>[36];</td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td>  <a id="75c3" class="tk">real32_T</a> <a id="75c12" class="tk">PHI_k</a>[36];</td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td>  <a id="76c3" class="tk">real32_T</a> <a id="76c12" class="tk">GAMMA_cx</a>[36];</td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td>  <a id="77c3" class="tk">real32_T</a> <a id="77c12" class="tk">H_k</a>[18];</td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td>  <a id="78c3" class="tk">real32_T</a> <a id="78c12" class="tk">K_k</a>[18];</td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td>  <a id="79c3" class="tk">real32_T</a> <a id="79c12" class="tk">y</a>[18];</td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td>  <a id="80c3" class="tk">char_T</a> <a id="80c10" class="tk">c</a>[56];</td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td>  <a id="81c3" class="tk">real_T</a> <a id="81c10" class="tk">x_apriori</a>[6];</td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td>  <a id="82c3" class="tk">real32_T</a> <a id="82c12" class="tk">bCn</a>[9];</td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td>  <a id="83c3" class="tk">real32_T</a> <a id="83c12" class="tk">x_aposteriori_k_x</a>[9];</td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td>  <a id="84c3" class="tk">int8_T</a> <a id="84c10" class="tk">b_I</a>[36];</td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td>  <a id="85c3" class="tk">real32_T</a> <a id="85c12" class="tk">fv0</a>[9];</td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td>  <a id="86c3" class="tk">real_T</a> <a id="86c10" class="tk">sensor_combined_o7</a>;           <span class="ct">/* '<a class="ct blk" blk_line="86">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td>  <a id="87c3" class="tk">real_T</a> <a id="87c10" class="tk">sensor_combined_o8</a>;           <span class="ct">/* '<a class="ct blk" blk_line="87">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td>  <a id="88c3" class="tk">real_T</a> <a id="88c10" class="tk">sensor_combined_o9</a>;           <span class="ct">/* '<a class="ct blk" blk_line="88">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td>  <a id="89c3" class="tk">real_T</a> <a id="89c10" class="tk">sensor_combined_o10</a>;          <span class="ct">/* '<a class="ct blk" blk_line="89">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td>  <a id="90c3" class="tk">real32_T</a> <a id="90c12" class="tk">vehicle_attitude</a>[4];        <span class="ct">/* '<a class="ct blk" blk_line="90">&lt;S8&gt;/vehicle_attitude</a>' */</span></td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td>  <a id="91c3" class="tk">real32_T</a> <a id="91c12" class="tk">sensor_combined_o1</a>;         <span class="ct">/* '<a class="ct blk" blk_line="91">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td>  <a id="92c3" class="tk">real32_T</a> <a id="92c12" class="tk">sensor_combined_o2</a>;         <span class="ct">/* '<a class="ct blk" blk_line="92">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td>  <a id="93c3" class="tk">real32_T</a> <a id="93c12" class="tk">sensor_combined_o3</a>;         <span class="ct">/* '<a class="ct blk" blk_line="93">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td>  <a id="94c3" class="tk">real32_T</a> <a id="94c12" class="tk">sensor_combined_o4</a>;         <span class="ct">/* '<a class="ct blk" blk_line="94">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td>  <a id="95c3" class="tk">real32_T</a> <a id="95c12" class="tk">sensor_combined_o5</a>;         <span class="ct">/* '<a class="ct blk" blk_line="95">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td>  <a id="96c3" class="tk">real32_T</a> <a id="96c12" class="tk">sensor_combined_o6</a>;         <span class="ct">/* '<a class="ct blk" blk_line="96">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td>  <a id="97c3" class="tk">RGBLED_COLOR_ENUM</a> <a id="97c21" class="tk">Switch1</a>;           <span class="ct">/* '<a class="ct blk" blk_line="97">&lt;Root&gt;/Switch1</a>' */</span></td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td>  <a id="98c3" class="tk">uint16_T</a> <a id="98c12" class="tk">input_rc</a>;                   <span class="ct">/* '<a class="ct blk" blk_line="98">&lt;Root&gt;/input_rc</a>' */</span></td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td><span class="br">}</span> <a id="99c3" class="tk">B_ekf_cf_T</a>;</td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td><span class="ct">/* Block states (auto storage) for system '<a class="ct blk" blk_line="101">&lt;Root&gt;</a>' */</span></td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <span class="br">{</span></td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td>  <a id="103c3" class="tk">led_control_s_t</a> <a id="103c19" class="tk">RGB_LED1_sl_led_control_s</a>;<span class="ct">/* '<a class="ct blk" blk_line="103">&lt;Root&gt;/RGB_LED1</a>' */</span></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td>  <a id="104c3" class="tk">pollfd_t</a> <a id="104c12" class="tk">vehicle_attitude_vehicle_attitu</a>;<span class="ct">/* '<a class="ct blk" blk_line="104">&lt;S8&gt;/vehicle_attitude</a>' */</span></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td>  <a id="105c3" class="tk">pollfd_t</a> <a id="105c12" class="tk">input_rc_input_rc_fd</a>;       <span class="ct">/* '<a class="ct blk" blk_line="105">&lt;Root&gt;/input_rc</a>' */</span></td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td>  <a id="106c3" class="tk">pollfd_t</a> <a id="106c12" class="tk">sensor_combined_sensor_fd</a>;  <span class="ct">/* '<a class="ct blk" blk_line="106">&lt;S7&gt;/sensor_combined</a>' */</span></td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td>  <a id="107c3" class="tk">real_T</a> <a id="107c10" class="tk">lognumstr</a>;                    <span class="ct">/* '<a class="ct blk" blk_line="107">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td>  <a id="108c3" class="tk">real_T</a> <a id="108c10" class="tk">count</a>;                        <span class="ct">/* '<a class="ct blk" blk_line="108">&lt;S5&gt;/MATLAB Function</a>' */</span></td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td>  <a id="109c3" class="tk">real32_T</a> <a id="109c12" class="tk">Delay2_DSTATE</a>;              <span class="ct">/* '<a class="ct blk" blk_line="109">&lt;S3&gt;/Delay2</a>' */</span></td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td>  <a id="110c3" class="tk">real32_T</a> <a id="110c12" class="tk">Delay_DSTATE</a>[6];            <span class="ct">/* '<a class="ct blk" blk_line="110">&lt;S6&gt;/Delay</a>' */</span></td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td>  <a id="111c3" class="tk">real32_T</a> <a id="111c12" class="tk">Delay1_DSTATE</a>[36];          <span class="ct">/* '<a class="ct blk" blk_line="111">&lt;S6&gt;/Delay1</a>' */</span></td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td>  <a id="112c3" class="tk">real32_T</a> <a id="112c12" class="tk">Delay_DSTATE_m</a>;             <span class="ct">/* '<a class="ct blk" blk_line="112">&lt;S4&gt;/Delay</a>' */</span></td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td>  <a id="113c3" class="tk">real32_T</a> <a id="113c12" class="tk">Delay1_DSTATE_l</a>;            <span class="ct">/* '<a class="ct blk" blk_line="113">&lt;S4&gt;/Delay1</a>' */</span></td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td>  <a id="114c3" class="tk">orb_advert_t</a> <a id="114c16" class="tk">RGB_LED1_orb_advert_t</a>;  <span class="ct">/* '<a class="ct blk" blk_line="114">&lt;Root&gt;/RGB_LED1</a>' */</span></td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td>  <a id="115c3" class="tk">uint32_T</a> <a id="115c12" class="tk">count_g</a>;                    <span class="ct">/* '<a class="ct blk" blk_line="115">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td>  <a id="116c3" class="tk">uint16_T</a> <a id="116c12" class="tk">elem_size</a>;                  <span class="ct">/* '<a class="ct blk" blk_line="116">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td>  <a id="117c3" class="tk">uint8_T</a> <a id="117c11" class="tk">vect_size</a>;                   <span class="ct">/* '<a class="ct blk" blk_line="117">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td>  <a id="118c3" class="tk">boolean_T</a> <a id="118c13" class="tk">isflushed</a>;                 <span class="ct">/* '<a class="ct blk" blk_line="118">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td>  <a id="119c3" class="tk">boolean_T</a> <a id="119c13" class="tk">isopen</a>;                    <span class="ct">/* '<a class="ct blk" blk_line="119">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td>  <a id="120c3" class="tk">FILE</a><a id="120c7" class="tk">*</a> <a id="120c9" class="tk">fp</a>;                            <span class="ct">/* '<a class="ct blk" blk_line="120">&lt;S11&gt;/MATLAB Function1</a>' */</span></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="br">}</span> <a id="121c3" class="tk">DW_ekf_cf_T</a>;</td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td><span class="ct">/* Constant parameters (auto storage) */</span></td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <span class="br">{</span></td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td>  <span class="ct">/* Expression: logname</span></td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td><span class="ct">   * Referenced by: '<a class="ct blk" blk_line="126">&lt;S11&gt;/MATLAB Function1</a>'</span></td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><span class="ct">   */</span></td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td>  <a id="128c3" class="tk">uint8_T</a> <a id="128c11" class="tk">MATLABFunction1_logname</a>[22];</td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td><span class="br">}</span> <a id="129c3" class="tk">ConstP_ekf_cf_T</a>;</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td></td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td><span class="ct">/* Real-time Model Data Structure */</span></td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td><span class="kw">struct</span> <a id="132c8" class="tk">tag_RTM_ekf_cf_T</a> <span class="br">{</span></td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td>  <span class="kw">const</span> <a id="133c9" class="tk">char_T</a> <a id="133c16" class="tk">*</a><a id="133c17" class="tk">errorStatus</a>;</td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td></td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td>  <span class="ct">/*</span></td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td><span class="ct">   * Timing:</span></td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td><span class="ct">   * The following substructure contains information regarding</span></td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td><span class="ct">   * the timing information for the model.</span></td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="ct">   */</span></td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td>  <span class="kw">struct</span> <span class="br">{</span></td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td>    <span class="kw">struct</span> <span class="br">{</span></td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td>      <a id="142c7" class="tk">uint8_T</a> <a id="142c15" class="tk">TID</a>[2];</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td>    <span class="br">}</span> <a id="143c7" class="tk">TaskCounters</a>;</td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td>  <span class="br">}</span> <a id="144c5" class="tk">Timing</a>;</td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td><span class="br">}</span>;</td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td></td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td><span class="ct">/* Block signals (auto storage) */</span></td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td><span class="kw">extern</span> <a id="148c8" class="tk">B_ekf_cf_T</a> <a id="148c19" class="tk">ekf_cf_B</a>;</td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td></td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td><span class="ct">/* Block states (auto storage) */</span></td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td><span class="kw">extern</span> <a id="151c8" class="tk">DW_ekf_cf_T</a> <a id="151c20" class="tk">ekf_cf_DW</a>;</td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td></td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td><span class="ct">/* Constant parameters (auto storage) */</span></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="154c14" class="tk">ConstP_ekf_cf_T</a> <a id="154c30" class="tk">ekf_cf_ConstP</a>;</td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td><span class="ct">/* External function called from main */</span></td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="157c13" class="tk">ekf_cf_SetEventsForThisBaseStep</a>(<a id="157c45" class="tk">boolean_T</a> <a id="157c55" class="tk">*</a><a id="157c56" class="tk">eventFlags</a>);</td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td></td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td><span class="ct">/* Model entry point functions */</span></td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="160c13" class="tk">ekf_cf_SetEventsForThisBaseStep</a>(<a id="160c45" class="tk">boolean_T</a> <a id="160c55" class="tk">*</a><a id="160c56" class="tk">eventFlags</a>);</td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="161c13" class="tk">ekf_cf_initialize</a>(<span class="kw">void</span>);</td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="162c13" class="tk">ekf_cf_step</a>(<a id="162c25" class="tk">int_T</a> <a id="162c31" class="tk">tid</a>);</td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="163c13" class="tk">ekf_cf_terminate</a>(<span class="kw">void</span>);</td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td></td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td><span class="ct">/* Real-time Model object */</span></td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td><span class="kw">extern</span> <a id="166c8" class="tk">RT_MODEL_ekf_cf_T</a> <a id="166c26" class="tk">*</a><span class="kw">const</span> <a id="166c33" class="tk">ekf_cf_M</a>;</td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td></td></tr>
+<tr name="168" id="168">
+<td><a id="l168" class='ln'>168</a></td><td><span class="ct">/*-</span></td></tr>
+<tr name="169" id="169">
+<td><a id="l169" class='ln'>169</a></td><td><span class="ct"> * These blocks were eliminated from the model due to optimizations:</span></td></tr>
+<tr name="170" id="170">
+<td><a id="l170" class='ln'>170</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="171" id="171">
+<td><a id="l171" class='ln'>171</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="171">&lt;S11&gt;/Data Type Conversion1</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="172" id="172">
+<td><a id="l172" class='ln'>172</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="172">&lt;S11&gt;/Data Type Conversion2</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="173" id="173">
+<td><a id="l173" class='ln'>173</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="173">&lt;S7&gt;/Data Type Conversion</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="174" id="174">
+<td><a id="l174" class='ln'>174</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="174">&lt;S7&gt;/Data Type Conversion1</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="175" id="175">
+<td><a id="l175" class='ln'>175</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="175">&lt;S7&gt;/Data Type Conversion2</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="176" id="176">
+<td><a id="l176" class='ln'>176</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="176">&lt;S7&gt;/Data Type Conversion3</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="177" id="177">
+<td><a id="l177" class='ln'>177</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="177">&lt;S7&gt;/Data Type Conversion4</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="178" id="178">
+<td><a id="l178" class='ln'>178</a></td><td><span class="ct"> * Block '<a class="ct blk" blk_line="178">&lt;S7&gt;/Data Type Conversion5</a>' : Eliminate redundant data type conversion</span></td></tr>
+<tr name="179" id="179">
+<td><a id="l179" class='ln'>179</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="180" id="180">
+<td><a id="l180" class='ln'>180</a></td><td></td></tr>
+<tr name="181" id="181">
+<td><a id="l181" class='ln'>181</a></td><td><span class="ct">/*-</span></td></tr>
+<tr name="182" id="182">
+<td><a id="l182" class='ln'>182</a></td><td><span class="ct"> * The generated code includes comments that allow you to trace directly</span></td></tr>
+<tr name="183" id="183">
+<td><a id="l183" class='ln'>183</a></td><td><span class="ct"> * back to the appropriate location in the model.  The basic format</span></td></tr>
+<tr name="184" id="184">
+<td><a id="l184" class='ln'>184</a></td><td><span class="ct"> * is &lt;system&gt;/block_name, where system is the system number (uniquely</span></td></tr>
+<tr name="185" id="185">
+<td><a id="l185" class='ln'>185</a></td><td><span class="ct"> * assigned by Simulink) and block_name is the name of the block.</span></td></tr>
+<tr name="186" id="186">
+<td><a id="l186" class='ln'>186</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="187" id="187">
+<td><a id="l187" class='ln'>187</a></td><td><span class="ct"> * Use the MATLAB hilite_system command to trace the generated code back</span></td></tr>
+<tr name="188" id="188">
+<td><a id="l188" class='ln'>188</a></td><td><span class="ct"> * to the model.  For example,</span></td></tr>
+<tr name="189" id="189">
+<td><a id="l189" class='ln'>189</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="190" id="190">
+<td><a id="l190" class='ln'>190</a></td><td><span class="ct"> * hilite_system('<a class="ct blk" blk_line="190">&lt;S3&gt;</a>')    - opens system 3</span></td></tr>
+<tr name="191" id="191">
+<td><a id="l191" class='ln'>191</a></td><td><span class="ct"> * hilite_system('<a class="ct blk" blk_line="191">&lt;S3&gt;/Kp</a>') - opens and selects block Kp which resides in S3</span></td></tr>
+<tr name="192" id="192">
+<td><a id="l192" class='ln'>192</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="193" id="193">
+<td><a id="l193" class='ln'>193</a></td><td><span class="ct"> * Here is the system hierarchy for this model</span></td></tr>
+<tr name="194" id="194">
+<td><a id="l194" class='ln'>194</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="195" id="195">
+<td><a id="l195" class='ln'>195</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="195">&lt;Root&gt;</a>' : 'ekf_cf'</span></td></tr>
+<tr name="196" id="196">
+<td><a id="l196" class='ln'>196</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="196">&lt;S1&gt;</a>'   : 'ekf_cf/MATLAB Function1'</span></td></tr>
+<tr name="197" id="197">
+<td><a id="l197" class='ln'>197</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="197">&lt;S2&gt;</a>'   : 'ekf_cf/MATLAB Function2'</span></td></tr>
+<tr name="198" id="198">
+<td><a id="l198" class='ln'>198</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="198">&lt;S3&gt;</a>'   : 'ekf_cf/Subsystem'</span></td></tr>
+<tr name="199" id="199">
+<td><a id="l199" class='ln'>199</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="199">&lt;S4&gt;</a>'   : 'ekf_cf/cf'</span></td></tr>
+<tr name="200" id="200">
+<td><a id="l200" class='ln'>200</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="200">&lt;S5&gt;</a>'   : 'ekf_cf/datalog'</span></td></tr>
+<tr name="201" id="201">
+<td><a id="l201" class='ln'>201</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="201">&lt;S6&gt;</a>'   : 'ekf_cf/ekf'</span></td></tr>
+<tr name="202" id="202">
+<td><a id="l202" class='ln'>202</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="202">&lt;S7&gt;</a>'   : 'ekf_cf/sensor_combined'</span></td></tr>
+<tr name="203" id="203">
+<td><a id="l203" class='ln'>203</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="203">&lt;S8&gt;</a>'   : 'ekf_cf/vehicle_attitude'</span></td></tr>
+<tr name="204" id="204">
+<td><a id="l204" class='ln'>204</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="204">&lt;S9&gt;</a>'   : 'ekf_cf/cf/MATLAB Function1'</span></td></tr>
+<tr name="205" id="205">
+<td><a id="l205" class='ln'>205</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="205">&lt;S10&gt;</a>'  : 'ekf_cf/datalog/MATLAB Function'</span></td></tr>
+<tr name="206" id="206">
+<td><a id="l206" class='ln'>206</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="206">&lt;S11&gt;</a>'  : 'ekf_cf/datalog/logger'</span></td></tr>
+<tr name="207" id="207">
+<td><a id="l207" class='ln'>207</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="207">&lt;S12&gt;</a>'  : 'ekf_cf/datalog/logger/MATLAB Function1'</span></td></tr>
+<tr name="208" id="208">
+<td><a id="l208" class='ln'>208</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="208">&lt;S13&gt;</a>'  : 'ekf_cf/ekf/MATLAB Function'</span></td></tr>
+<tr name="209" id="209">
+<td><a id="l209" class='ln'>209</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="209">&lt;S14&gt;</a>'  : 'ekf_cf/vehicle_attitude/px4_est_en'</span></td></tr>
+<tr name="210" id="210">
+<td><a id="l210" class='ln'>210</a></td><td><span class="ct"> * '<a class="ct blk" blk_line="210">&lt;S15&gt;</a>'  : 'ekf_cf/vehicle_attitude/quat2eul'</span></td></tr>
+<tr name="211" id="211">
+<td><a id="l211" class='ln'>211</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="212" id="212">
+<td><a id="l212" class='ln'>212</a></td><td><span class="pp">#endif</span>                                 <span class="ct">/* RTW_HEADER_ekf_cf_h_ */</span></td></tr>
+<tr name="213" id="213">
+<td><a id="l213" class='ln'>213</a></td><td></td></tr>
+<tr name="214" id="214">
+<td><a id="l214" class='ln'>214</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="215" id="215">
+<td><a id="l215" class='ln'>215</a></td><td><span class="ct"> * File trailer for generated code.</span></td></tr>
+<tr name="216" id="216">
+<td><a id="l216" class='ln'>216</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="217" id="217">
+<td><a id="l217" class='ln'>217</a></td><td><span class="ct"> * [EOF]</span></td></tr>
+<tr name="218" id="218">
+<td><a id="l218" class='ln'>218</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="219" id="219">
+<td><a id="l219" class='ln'>219</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

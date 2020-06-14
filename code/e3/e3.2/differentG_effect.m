@@ -1,3 +1,4 @@
+%  Please complete the section using the "%@" logo before run the code.
 close all
 clear
 load accdata.mat  % raw accelerometer data collected

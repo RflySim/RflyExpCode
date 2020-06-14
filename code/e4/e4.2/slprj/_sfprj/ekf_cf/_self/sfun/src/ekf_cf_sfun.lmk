@@ -1,0 +1,29 @@
+CC     = "D:\Program Files\MATLAB\sys\lcc64\lcc64\bin\lcc64.exe"
+LD     = "D:\Program Files\MATLAB\sys\lcc64\lcc64\bin\lcclnk64.exe"
+LIBCMD = "D:\Program Files\MATLAB\sys\lcc64\lcc64\bin\lcclib64.exe"
+CFLAGS = -dll -noregistrylookup  -c -Zp8 -DLCC_WIN64 -DMATLAB_MEX_FILE -nodeclspec -DMX_COMPAT_32 
+LDFLAGS = -s -dll -L"D:\Program Files\MATLAB\sys\lcc64\lcc64\lib64" -entry LibMain -map sfun.map 
+LIBFLAGS = 
+
+OBJECTS = \
+	"ekf_cf_sfun.obj"\
+	"c5_ekf_cf.obj"\
+	"ekf_cf_sfun_registry.obj"\
+	"lccstub.obj"\
+	"c_mexapi_version.obj"\
+
+INCLUDE_PATH= -I"D:\Program Files\MATLAB\extern\include"  -I"D:\Program Files\MATLAB\simulink\include"  -I"D:\Program Files\MATLAB\simulink\include\sf_runtime"  -I"D:\Program Files\MATLAB\stateflow\c\mex\include"  -I"D:\Program Files\MATLAB\rtw\c\src"  -I"G:\MulticoperDesignAndControl\MulticoperModel\3.4_en\release_teacher\e4\e4.2\slprj\_sfprj\ekf_cf\_self\sfun\src"  -I"D:\Program Files\MATLAB\sys\lcc64\lcc64\include64" 
+ 
+
+ekf_cf_sfun.mexw64 : $(MAKEFILE) $(OBJECTS)
+	$(LD) $(LDFLAGS) -o ekf_cf_sfun.mexw64 @ekf_cf_sfun.lmko
+ekf_cf_sfun.obj :	"ekf_cf_sfun.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ekf_cf_sfun.c"
+c5_ekf_cf.obj :	"c5_ekf_cf.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c5_ekf_cf.c"
+ekf_cf_sfun_registry.obj :	"ekf_cf_sfun_registry.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ekf_cf_sfun_registry.c"
+lccstub.obj :	"D:\Program Files\MATLAB\sys\lcc64\lcc64\mex\lccstub.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "D:\Program Files\MATLAB\sys\lcc64\lcc64\mex\lccstub.c"
+c_mexapi_version.obj :	"D:\Program Files\MATLAB\extern\version\c_mexapi_version.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "D:\Program Files\MATLAB\extern\version\c_mexapi_version.c"

@@ -1,11 +1,14 @@
 %File Description:
 %  Unknown parameters in accelerometer error model are calculated using the
 %  lm optimization algorithm.
+%  Please complete the section using the "%@" logo before run the code.
 close all
 clc
 clear
 
 %% Decode the binary data
+%datapoints are 6-dimensional array, the first three are the values of the
+%accelerometer; the last three are feature points.
 %@ [datapoints, numpoints] = px4_read_binary_file(' ');
 
 %% Get uncalibrated data
@@ -14,14 +17,14 @@ clear
  %@ CAL_ACC_SCALE= ;  % 3*1 
  %@ CAL_ACC_OFF= ;  % 3*1
 
-acc_acq = find(datapoints(4, :));
+acc_acq = find(datapoints(4, :));  % find the position of feature points 
 g = 9.8;
 AccPX4 = datapoints(4:6, acc_acq);
 datapoints(1:3, :) = (datapoints(1:3, :) + CAL_ACC_OFF) ./CAL_ACC_SCALE;
 datapoints(4:6, acc_acq) = (datapoints(4:6, acc_acq) + CAL_ACC_OFF) ./CAL_ACC_SCALE;
 plot_data(datapoints, acc_acq);
 
-AccRaw = datapoints(4:6, acc_acq);  %raw data
+AccRaw = datapoints(4:6, acc_acq);  % raw data
 m=length(AccRaw);
 
 %% calibration procedure

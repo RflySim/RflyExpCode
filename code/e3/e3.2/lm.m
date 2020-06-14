@@ -1,5 +1,6 @@
 function p = lm(func, p, x, y_dat, dp, p_min, p_max)
 %Function description:
+%Refer to: Methods for Non-Linear Least Squares Problems. lecture note. pp. 24-30.
 %Input:
 %  func: functfion name y_hat = func(x, p)
 %  p: initial value of the parameter to be estimated

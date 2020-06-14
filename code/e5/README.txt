@@ -15,7 +15,7 @@ the performance of the control system.
         costom_attctrl_e5.msg.msg
     (3) Modify "Firmware/src/modules/logger/logger.cpp". Add the follow words in add_common_topics():
         add_topic( "costom_attctrl_e5", 4);
-        Where "costom_attctrl_e5" is the name of message, "4" is logging cycle. That is, the system records the
+        Where "costom_attctrl_e5" is the name of message, "4" is logging period. That is, the system records the
         data with a sampling period of 4ms.
     All the modified files are put in 'e5\e5.4\PSPfile' as an example.
     
