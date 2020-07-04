@@ -18,7 +18,7 @@ KiRollRate = 0.460338699849681 / kFactor;
 KpPitchRate = 1.31533836563383 / kFactor;
 KiPitchRate = 0.460338699849681 / kFactor;
 
-KpYawRate = 1.31533836563383 / kFactor;
-KiYawRate = 0.460338699849681 / kFactor;
+KpYawRate = 1.31533836563383 / kFactor * 2;
+KiYawRate = 0.460338699849681 / kFactor * 2;
 
 
