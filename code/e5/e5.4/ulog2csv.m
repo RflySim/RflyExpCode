@@ -3,38 +3,27 @@ function ulog2csv(ulogfile, outputFileName)
 %outputFileName
 %usage£ºulog2csv('log001.ulg','log001')
 if exist(ulogfile,'file')
-    dirNmae=[userpath,'\ulogTmp'];
-    if exist(dirNmae,'dir')
-        rmdir(dirNmae,'s');    
-    end    
-    mkdir(dirNmae);  
-    mkdir([dirNmae,'\',outputFileName]); 
-    
-    copyfile(ulogfile,dirNmae,'f');
-    
-    pathstr = dirNmae;
+    if ~exist(outputFileName,'dir')
+        mkdir(outputFileName);        
+    end
+
+    pathstr = pwd;
     pathstr=strrep(pathstr,':','');
     pathstr=strrep(pathstr,'\','/');
     pathstr(1)=lower(pathstr(1));
     pathstr1=['/mnt/',pathstr];
-    pathstr1=strrep(pathstr1,' ','\ ');
-    
-    PSPFold='PX4PSP';
-    if exist([userpath,'\Add-Ons\Toolboxes\PX4 PSP'],'dir')
-        PSPFold='PX4 PSP';
-    end
-    
-if exist([userpath,'\Add-Ons\Toolboxes\',PSPFold,'\code\+codertarget\+Pixhawk\+CMAKE_Utils\FirmwareVersion.mat'],'file')
-    load([userpath,'\Add-Ons\Toolboxes\',PSPFold,'\code\+codertarget\+Pixhawk\+CMAKE_Utils\FirmwareVersion.mat']);
+
+if exist([userpath,'\Add-Ons\Toolboxes\PX4 PSP\code\+codertarget\+Pixhawk\+CMAKE_Utils\FirmwareVersion.mat'],'file')
+    load([userpath,'\Add-Ons\Toolboxes\PX4 PSP\code\+codertarget\+Pixhawk\+CMAKE_Utils\FirmwareVersion.mat']);
     if exist('buildToolchain','var')
         toolchainType=buildToolchain;
         
         if toolchainType == '1'
-            command = ['wsl ','cd ~; ulog2csv ','-o ',pathstr1,'/',outputFileName,'/ ',pathstr1,'/',ulogfile,''];
+            command = ['C:\Windows\system32\bash.exe -c ','cd ~; ulog2csv ','-o ',pathstr1,'/',outputFileName,'/ ',pathstr1,'/',ulogfile,''];
         else
             defaultPX4Path = 'C:\PX4PSP';
-            if exist([userpath,'\Add-Ons\Toolboxes\',PSPFold,'\code\+codertarget\+Pixhawk\+CMAKE_Utils\CmakeInfo.mat'],'file')
-                load([userpath,'\Add-Ons\Toolboxes\',PSPFold,'\code\+codertarget\+Pixhawk\+CMAKE_Utils\CmakeInfo.mat']);
+            if exist([userpath,'\Add-Ons\Toolboxes\PX4 PSP\code\+codertarget\+Pixhawk\+CMAKE_Utils\CmakeInfo.mat'],'file')
+                load([userpath,'\Add-Ons\Toolboxes\PX4 PSP\code\+codertarget\+Pixhawk\+CMAKE_Utils\CmakeInfo.mat']);
                 if~isempty(Px4PSP_CmakeInfo.Px4_Base_Dir)
                     defaultPX4Path=Px4PSP_CmakeInfo.Px4_Base_Dir;
                 end
@@ -53,14 +42,10 @@ if exist([userpath,'\Add-Ons\Toolboxes\',PSPFold,'\code\+codertarget\+Pixhawk\+C
 end    
   status = system(command);
   if status
-    fprintf(2,'Error: Make sure this code executes in the same workspace as the data file!\n');
+    error('Make sure this code executes in the same workspace as the data file!');
   else
-      copyfile([dirNmae,'\',outputFileName],[pwd,'\',outputFileName],'f');
     disp('*******The conversion is complete!*******');
   end
-    if exist(dirNmae,'dir')
-        rmdir(dirNmae,'s');    
-    end   
 else
     error('file does not exist!');
 end
