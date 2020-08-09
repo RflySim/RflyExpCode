@@ -1,4 +1,0 @@
-LIBRARY ekf_cf_sfun.mexw64
-EXPORTS
-mexFunction
-mexfilerequiredapiversion
