@@ -16,11 +16,11 @@ roll_9_8 = zeros(1, 100);
 pitch_9_8 = zeros(1, 100);
 for k = 1:100
     g = normest(acc_1(:, k));
-    roll_1(k) = asin(acc_1(1, k)./g);
-    pitch_1(k) = -asin(acc_1(2,k)./(g.*cos(roll_1(k))));
+    pitch_1(k) = asin(acc_1(1, k)./g);
+    roll_1(k) = -asin(acc_1(2,k)./(g.*cos(pitch_1(k))));
     g = normest(acc_9_8(:, k));
-    roll_9_8(k) = asin(acc_9_8(1, k)./g);
-    pitch_9_8(k) = -asin(acc_9_8(2, k)./(g.*cos(roll_9_8(k))));
+    pitch_9_8(k) = asin(acc_9_8(1, k)./g);
+    roll_9_8(k) = -asin(acc_9_8(2, k)./(g.*cos(pitch_9_8(k))));
 end
 t = 1:100;
 figure(1)

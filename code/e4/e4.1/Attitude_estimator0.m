@@ -21,12 +21,12 @@ for k = 1 : n-1
     Ts(k+1) = (timestamp(k + 1) - timestamp(k))*0.000001;
 end
 
-theta_am = zeros(1, n);  %roll calculated from accelerometer data, unit: rad
-phi_am = zeros(1, n);  %pitch calculated from accelerometer data, unit: rad
-theta_gm = zeros(1, n);  %roll from the gyroscope data, unit: rad
-phi_gm = zeros(1, n);  %pitch from the gyroscope data, unit: rad
-theta_cf = zeros(1, n);  %roll obtained from complementary filtering, unit: rad
-phi_cf = zeros(1, n);  %pitch obtained from complementary filtering, unit: rad
+theta_am = zeros(1, n);  %pitch calculated from accelerometer data, unit: rad
+phi_am = zeros(1, n);  %roll calculated from accelerometer data, unit: rad
+theta_gm = zeros(1, n);  %pitch from the gyroscope data, unit: rad
+phi_gm = zeros(1, n);  %roll from the gyroscope data, unit: rad
+theta_cf = zeros(1, n);  %pitch obtained from complementary filtering, unit: rad
+phi_cf = zeros(1, n);  %roll obtained from complementary filtering, unit: rad
 tao = 0.1;
 for k = 2 : n
     %Calculate Euler angles using accelerometer data

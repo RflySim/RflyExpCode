@@ -38,17 +38,17 @@ MAX_CONTROL_ANGLE_RATE_PITCH = 220;
 MAX_CONTROL_ANGLE_RATE_ROLL = 220;
 MAX_CONTROL_ANGLE_RATE_Y = 200;
 %parameters in adrc
-TD_R = single(20.0);
-TD_H = single(1.0);
-NLSEF_R = single(200.0);
-NLSEF_H = single(25.0);
-NLSEF_C = single(5.0);
-ESO_B01 = single(250.0);
-ESO_B02 = single(2000.0);
-ESO_B03 = single(3000.0);
-ESO_B0 = single(47.4);
-ESO_H = single(1.0);
-ESO_D = single(0.01);
+SL_TD_R = single(20.0);
+SL_TD_H = single(1.0);
+SL_NLSEF_R = single(200.0);
+SL_NLSEF_H = single(25.0);
+SL_NLSEF_C = single(5.0);
+SL_ESO_B01 = single(250.0);
+SL_ESO_B02 = single(2000.0);
+SL_ESO_B03 = single(3000.0);
+SL_ESO_B0 = single(47.4);
+SL_ESO_H = single(1.0);
+SL_ESO_D = single(0.01);
 tau2sigma = single(0.108);
 %CSC
 RC1_MIN = single(1050);
@@ -60,4 +60,4 @@ RC3_MAX = single(1950);
 RC4_MIN = single(1050);
 RC4_MAX = single(1950);
 %% run simulink model
-%AttitudeControl_ADRC_Sim
+AttitudeControl_ADRC_Sim

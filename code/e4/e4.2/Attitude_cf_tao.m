@@ -9,8 +9,8 @@ for k =1:n-1
     Ts(k+1) = (timestamp(k + 1) - timestamp(k))*0.000001;
 end
 
-theta_cf = zeros(3, n);  %roll calculated from complementary filtering, unit: rad
-phi_cf = zeros(3, n);  %pitch calculated from complementary filtering, unit: rad
+theta_cf = zeros(3, n);  %pitch calculated from complementary filtering, unit: rad
+phi_cf = zeros(3, n);  %roll calculated from complementary filtering, unit: rad
 tao = 0.001;
 %@
 for i = 1 : 3

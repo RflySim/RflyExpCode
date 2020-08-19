@@ -8,12 +8,12 @@ for k = 1 : n-1
     Ts(k+1) = (timestamp(k + 1) - timestamp(k))*0.000001;
 end
 
-theta_am = zeros(1, n);  % roll calculated from accelerometer data, unit: rad
-phi_am = zeros(1, n);  % pitch calculated from accelerometer data, unit: rad
-theta_gm = zeros(1, n);  %roll calculated from gyroscope data, unit: rad
-phi_gm = zeros(1, n);  %pitch calculated from gyroscope data, unit: rad
-theta_cf = zeros(1, n);  %roll calculated from complementary filter
-phi_cf = zeros(1, n);  %pitch calculated from complementary filter
+theta_am = zeros(1, n);  % pitch calculated from accelerometer data, unit: rad
+phi_am = zeros(1, n);  % roll calculated from accelerometer data, unit: rad
+theta_gm = zeros(1, n);  %pitch calculated from gyroscope data, unit: rad
+phi_gm = zeros(1, n);  %roll calculated from gyroscope data, unit: rad
+theta_cf = zeros(1, n);  %pitch calculated from complementary filter
+phi_cf = zeros(1, n);  %roll calculated from complementary filter
 phi_ekf = zeros(1, n);  %roll calculated from EKF
 theta_ekf = zeros(1, n);  %pitch caculated from EKF
 
