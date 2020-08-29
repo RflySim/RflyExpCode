@@ -1,5 +1,6 @@
 # RflyExpCode
 This is the instructional package for 'Multicopter Design and Control Practice'. Please see https://rflysim.com for detailed information.<br>
+You should download and install the RflySim Basic package to use the PPTs and codes, the download link is https://rflysim.com/download<br>
 
 # Introduction
 The model in "e0" is mainly used for the introduction of the experimental platform, corresponding to the relevant  content in Chapters 3 and 4 of the book.<br>
